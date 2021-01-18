@@ -1,4 +1,3 @@
-const dbQuery = require("../db/dbQuery");
 const {
     DB,
     GET_ALL_ACTORS,
@@ -6,8 +5,15 @@ const {
     GET_ACTORS_BY_STREAK
 } = require("../db/dbQuery");
 
-const successMessage = { status: true, message: 'Request was processed successful' };
-const errorMessage = { status: false, error: '', message: 'An error occurred while processing your request!' };
+const successMessage = {
+    status: true,
+    message: 'Request was processed successful'
+};
+const errorMessage = {
+    status: false,
+    error: '',
+    message: 'An error occurred while processing your request!'
+};
 
 var getAllActors = (req, res) => {
     try {

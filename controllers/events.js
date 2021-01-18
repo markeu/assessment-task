@@ -1,7 +1,23 @@
-const { DB, CHECK_IF_ACTOR_EXIST, INSERT_ACTOR_SQL, INSERT_EVENT_SQL, INSERT_REPO_SQL, GET_EVENTS_BY_ACTOR } = require('../db/dbQuery')
+const {
+    DB,
+    CHECK_IF_ACTOR_EXIST,
+    INSERT_ACTOR_SQL,
+    INSERT_EVENT_SQL,
+    INSERT_REPO_SQL,
+    GET_EVENTS_BY_ACTOR,
+    DROP_ALL_RECORDS,
+    ALL_EVENT_SQL
+} = require('../db/dbQuery')
 
-const successMessage = { status: true, message: 'Request was processed successful' };
-const errorMessage = { status: false, error: '', message: 'An error occurred while processing your request!' };
+const successMessage = {
+    status: true,
+    message: 'Request was processed successful'
+};
+const errorMessage = {
+    status: false,
+    error: '',
+    message: 'An error occurred while processing your request!'
+};
 
 const eventmapper = (eventdata) => {
     eventdata.actor = {};
@@ -23,7 +39,20 @@ const eventmapper = (eventdata) => {
 }
 
 var getAllEvents = (req, res) => {
+    try {
+        DB.all(ALL_EVENT_SQL, (error, response) => {
+            if (error) {
+                errorMessage.message = error;
+                return res.status(404).send(errorMessage)
+            }
 
+            successMessage.data = response.map(eventmapper);
+            successMessage.message = "Events retrieved succcefully";
+            res.status(200).send(successMessage)
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
 };
 var addEvent = (req, res) => {
     try {
@@ -69,7 +98,7 @@ var getEventByActorID = (req, res) => {
 
             successMessage.data = response.map(eventmapper);
             successMessage.message = "Actor's Events retrieved successfully";
-            res.status(201).send(successMessage)
+            res.status(200).send(successMessage)
         })
     } catch (error) {
         res.status(500).send(error);
@@ -77,8 +106,20 @@ var getEventByActorID = (req, res) => {
 };
 
 
-var eraseEvents = () => {
-
+var eraseEvents = (req, res) => {
+    try {
+        DB.run(DROP_ALL_RECORDS, (error, response) => {
+            if (error) {
+                errorMessage.message = error;
+                return res.status(404).send(errorMessage)
+            }
+            successMessage.message = "All records have been deleted successfully"
+            successMessage.data = null
+            res.status(200).send(successMessage)
+        })
+    } catch (error) {
+        res.status(500).send(error);
+    }
 };
 
 module.exports = {
