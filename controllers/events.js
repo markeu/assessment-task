@@ -123,8 +123,8 @@ var eraseEvents = (req, res) => {
 };
 
 module.exports = {
-    getAllEvents: getAllEvents,
-    addEvent: addEvent,
-    getByActor: getEventByActorID,
-    eraseEvents: eraseEvents
+    getAllEvents,
+    addEvent,
+    getEventByActorID,
+    eraseEvents
 };

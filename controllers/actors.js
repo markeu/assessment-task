@@ -73,7 +73,7 @@ var getStreak = (req, res) => {
 
 
 module.exports = {
-    updateActor: updateActor,
-    getAllActors: getAllActors,
-    getStreak: getStreak
+    updateActor,
+    getAllActors,
+    getStreak
 };
