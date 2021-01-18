@@ -1,5 +1,10 @@
 const dbQuery = require("../db/dbQuery");
-const { DB, GET_ALL_ACTORS, UPDATE_ACTOR } = require("../db/dbQuery");
+const {
+    DB,
+    GET_ALL_ACTORS,
+    UPDATE_ACTOR,
+    GET_ACTORS_BY_STREAK
+} = require("../db/dbQuery");
 
 const successMessage = { status: true, message: 'Request was processed successful' };
 const errorMessage = { status: false, error: '', message: 'An error occurred while processing your request!' };
@@ -40,8 +45,24 @@ var updateActor = (req, res) => {
     }
 };
 
-var getStreak = () => {
-
+var getStreak = (req, res) => {
+    try {
+        DB.all(GET_ACTORS_BY_STREAK, (error, response) => {
+            if (error) {
+                errorMessage.message = error
+                res.send(400).send(errorMessage)
+            }
+            successMessage.message = "Actor details retrieved successfully"
+            successMessage.data = response.map(actor => {
+                delete actor.streak;
+                delete actor.create_at;
+                return actor;
+            })
+            res.status(200).send(successMessage)
+        })
+    } catch (error) {
+        res.status(500).send(error)
+    }
 };
 
 
