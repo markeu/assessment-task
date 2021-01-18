@@ -1,4 +1,4 @@
-var DB = require('./db')
+var DB = require('./database')
 const Promise = require('bluebird')
 
 const ALL_EVENT_SQL = `SELECT events.*, actors.id AS actor_id, actors.login, actors.avatar_url, repos.id as repo_id, repos.url, repos.name
