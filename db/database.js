@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose()
 
-const DBSOURCE = 'db.sqlite';
+const DBSOURCE = 'express.dataset';
 
 const DB_SCHEMA = `CREATE TABLE IF NOT EXISTS actors (
   id integer NOT NULL PRIMARY KEY,
