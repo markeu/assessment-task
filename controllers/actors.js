@@ -1,5 +1,5 @@
 const dbQuery = require("../db/dbQuery");
-const { DB, GET_ALL_ACTORS } = require("../db/dbQuery");
+const { DB, GET_ALL_ACTORS, UPDATE_ACTOR } = require("../db/dbQuery");
 
 const successMessage = { status: true, message: 'Request was processed successful' };
 const errorMessage = { status: false, error: '', message: 'An error occurred while processing your request!' };
@@ -22,8 +22,22 @@ var getAllActors = (req, res) => {
     }
 };
 
-var updateActor = () => {
+var updateActor = (req, res) => {
+    try {
+        const { avatar_url, id } = req.body;
+        DB.run(UPDATE_ACTOR, [avatar_url, id], (error, response) => {
+            if (error) {
+                errorMessage.message = error
+                res.send(400).send(errorMessage)
+            }
+            successMessage.message = "Actor Avatar updated succesfully"
+            successMessage.data = null;
+            res.status(200).send(successMessage)
+        })
 
+    } catch (error) {
+        res.send(500).send(error)
+    }
 };
 
 var getStreak = () => {
